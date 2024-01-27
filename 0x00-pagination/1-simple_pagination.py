@@ -35,13 +35,17 @@ class Server:
         return self.__dataset
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
-            '''apply indes_range to get start and end indices
-               and return the correct page
-            '''
-            assert isinstance(page, int) and page > 0 and isinstance(page_size, int) and page_size > 0
-            indexes = index_range(page, page_size)
-            dataset = self.dataset()
-            if indexes[0] > indexes[1] or indexes[0] > len(dataset) or indexes[1] > len(dataset):
-                 return []
-            page = [self.__dataset[data] for data in range(indexes[0], indexes[1])]
-            return page
+        '''apply indes_range to get start and end indices
+            and return the correct page
+        '''
+        assert isinstance(page, int) and page > 0 and\
+            isinstance(page_size, int) and page_size > 0
+        indexes = index_range(page, page_size)
+        dataset = self.dataset()
+        if indexes[0] > indexes[1] or indexes[0] > len(dataset):
+            return []
+        elif indexes[1] > len(dataset):
+            return []
+        page = [self.__dataset[data] for data
+                in range(indexes[0], indexes[1])]
+        return page
