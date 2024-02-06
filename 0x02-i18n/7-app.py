@@ -26,6 +26,7 @@ app.config.from_object(Config)
 babel = Babel(app)
 
 
+babel.timezoneselector
 def get_timezone():
     '''get time zone'''
     loc_zone = request.args.get('timezone')
