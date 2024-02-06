@@ -28,7 +28,7 @@ babel = Babel(app)
 
 
 babel.timezoneselector
-def get_timezone():
+def get_timezone() -> str:
     '''get time zone'''
     loc_zone = request.args.get('timezone')
     if not loc_zone and g.user is not None:
@@ -43,7 +43,7 @@ def get_timezone():
 
 
 @babel.localeselector
-def get_locale():
+def get_locale() -> str:
     '''get local language'''
     loc_lang = request.args.get('locale')
     if loc_lang in app.config['LANGUAGES']:

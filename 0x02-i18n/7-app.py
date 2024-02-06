@@ -42,7 +42,7 @@ def get_timezone() -> str:
 
 
 @babel.localeselector
-def get_locale():
+def get_locale() -> str:
     '''get local language'''
     loc_lang = request.args.get('locale')
     if loc_lang in app.config['LANGUAGES']:
