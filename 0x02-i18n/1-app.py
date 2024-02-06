@@ -20,6 +20,9 @@ app.config['BABEL_DEFAULT_LOCALE'] = "en"
 app.config['BABEL_DEFAULT_TIMEZONE'] = "UTC"
 
 
+app.config.from_object(Config)
+
+
 @app.route('/')
 def home():
     '''route(/)'''
