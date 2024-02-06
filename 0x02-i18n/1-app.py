@@ -13,6 +13,9 @@ class Config(object):
     LANGUAGES = ['en', 'fr']
 
 
+app.config.from_object(Config)
+
+
 app.config['BABEL_DEFAULT_LOCALE'] = "en"
 app.config['BABEL_DEFAULT_TIMEZONE'] = "UTC"
 
