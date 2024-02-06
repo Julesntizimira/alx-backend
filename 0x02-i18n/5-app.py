@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-'''   Parametrize templates
+''' Mock logging in
 '''
 from flask import Flask, render_template, request, g
 from flask_babel import Babel
@@ -22,8 +22,10 @@ class Config(object):
 
 app = Flask(__name__)
 app.config.from_object(Config)
+babel = Babel(app)
 
 
+@babel.localeselector
 def get_locale():
     '''get local language'''
     loc_lang = request.args.get('locale')
@@ -32,21 +34,19 @@ def get_locale():
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
-babel = Babel(app, locale_selector=get_locale)
-
 def get_user():
     '''login user'''
     id = request.args.get('login_as', None)
     if id is not None and int(id) in users.keys():
         return users.get(int(id))
     return None
-    
 
 
 @app.before_request
 def before_request():
     '''befor request fun'''
     g.user = get_user()
+
 
 @app.route('/')
 def home():
