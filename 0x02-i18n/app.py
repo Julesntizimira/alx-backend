@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-''' Infer appropriate time zone
+''' Display the current time
 '''
 from flask import Flask, render_template, request, g
-from flask_babel import Babel
+from flask_babel import Babel, format_datetime
 import pytz
+from datetime import datetime
 
 
 users = {
@@ -71,7 +72,9 @@ def before_request():
 @app.route('/')
 def home():
     '''route(/)'''
-    return render_template('7-index.html')
+    dt = datetime(2020, 1, 21, 5, 55, 59)
+    dz = format_datetime(dt)
+    return render_template('index.html', dz)
 
 
 if __name__ == "__main__":
