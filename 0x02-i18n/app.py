@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-'''   Parametrize templates
+''' Infer appropriate time zone
 '''
 from flask import Flask, render_template, request, g
-from flask_babel import Babel, format_datetime
-from datetime import datetime
+from flask_babel import Babel
 import pytz
 
 
@@ -24,19 +23,10 @@ class Config(object):
 
 app = Flask(__name__)
 app.config.from_object(Config)
+babel = Babel(app)
 
 
-def get_locale():
-    '''get local language'''
-    loc_lang = request.args.get('locale')
-    if loc_lang in app.config['LANGUAGES']:
-        return loc_lang
-    elif g.user is not None:
-        loc_lang = g.user.get('locale')
-        if loc_lang in app.config['LANGUAGES']:
-            return loc_lang
-    return request.accept_languages.best_match(app.config['LANGUAGES'])
-
+babel.timezoneselector
 def get_timezone():
     '''get time zone'''
     loc_zone = request.args.get('timezone')
@@ -51,7 +41,18 @@ def get_timezone():
     return app.config['BABEL_DEFAULT_TIMEZONE']
 
 
-babel = Babel(app, locale_selector=get_locale, timezone_selector=get_timezone)
+@babel.localeselector
+def get_locale():
+    '''get local language'''
+    loc_lang = request.args.get('locale')
+    if loc_lang in app.config['LANGUAGES']:
+        return loc_lang
+    elif g.user is not None:
+        loc_lang = g.user.get('locale')
+        if loc_lang in app.config['LANGUAGES']:
+            return loc_lang
+    return request.accept_languages.best_match(app.config['LANGUAGES'])
+
 
 def get_user():
     '''login user'''
@@ -59,7 +60,6 @@ def get_user():
     if id is not None and int(id) in users.keys():
         return users.get(int(id))
     return None
-    
 
 
 @app.before_request
@@ -67,13 +67,11 @@ def before_request():
     '''befor request fun'''
     g.user = get_user()
 
-@app.route("/")
+
+@app.route('/')
 def home():
     '''route(/)'''
-    dt = datetime(2020, 1, 21, 5, 55, 59)
-    dz = format_datetime(dt)
-    return render_template('index.html', dz=dz)
-
+    return render_template('7-index.html')
 
 
 if __name__ == "__main__":
